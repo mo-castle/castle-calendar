@@ -96,6 +96,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             calendarEl.appendChild(dayCell);
         }
+
+        // Re-apply selected class if a date is currently selected
+        if (selectedFullDate) {
+            const selectedCell = calendarEl.querySelector(`.calendar-day[data-date="${selectedFullDate}"]`);
+            if (selectedCell) {
+                selectedCell.classList.add('selected');
+                // Ensure the selectedDayElement variable also points to the new element
+                selectedDayElement = selectedCell;
+            } else {
+                // If the selected date is not in the current month view, clear selection visually
+                // (This might happen if user selects a date then navigates months before mood save finishes re-render)
+                 selectedDayElement = null; // Clear the reference
+                 // selectedFullDate remains, so prompt stays correct until new selection
+            }
+        }
     }
 
     function selectDate(dayElement, fullDate) {
@@ -105,18 +120,33 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedDayElement = dayElement;
         selectedDayElement.classList.add('selected');
         selectedFullDate = fullDate;
-        // Update prompt text
+        // Update prompt text based on whether it's today or yesterday
+        const today = new Date();
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+
+        const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const yesterdayString = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
         const [year, month, day] = fullDate.split('-');
-        moodPromptEl.textContent = `${parseInt(month)}/${parseInt(day)} はどうだった？`; // Use MM/DD format
+        const displayDate = `${parseInt(month)}/${parseInt(day)}`;
+
+        if (fullDate === todayString) {
+            moodPromptEl.textContent = `今日(${displayDate}) はどうだった？`;
+        } else if (fullDate === yesterdayString) {
+            moodPromptEl.textContent = `昨日(${displayDate}) はどうだった？`;
+        } else {
+            moodPromptEl.textContent = `${displayDate} はどうだった？`;
+        }
         displayMoodForSelectedDate();
     }
 
     function displayMoodForSelectedDate() {
         if (selectedFullDate) {
             const moods = getMoods();
-            moodDisplayEl.textContent = moods[selectedFullDate] || '記録なし';
+            moodDisplayEl.textContent = moods[selectedFullDate] || '-'; // Changed '記録なし' to '-'
         } else {
-            moodDisplayEl.textContent = '記録なし';
+            moodDisplayEl.textContent = '-'; // Changed '記録なし' to '-'
         }
     }
 
@@ -153,20 +183,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset prompt to placeholder
         moodPromptEl.innerHTML = ''; // Clear existing text
         moodPromptEl.appendChild(selectedDatePlaceholderEl); // Re-add placeholder span
-        moodDisplayEl.textContent = '記録なし';
+        moodDisplayEl.textContent = '-'; // Changed '記録なし' to '-'
     }
 
     // --- Initial Load ---
     renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
-    // Select today's date by default
-    const today = new Date();
-    const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const todayCell = calendarEl.querySelector(`.calendar-day[data-date="${todayString}"]`);
-    if (todayCell) {
-        selectDate(todayCell, todayString);
+    // Select yesterday's date by default
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1); // Subtract one day
+    const yesterdayString = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+    const yesterdayCell = calendarEl.querySelector(`.calendar-day[data-date="${yesterdayString}"]`);
+
+    // If yesterday is visible in the current month view, select it
+    if (yesterdayCell && !yesterdayCell.classList.contains('other-month')) {
+         selectDate(yesterdayCell, yesterdayString);
     } else {
-        // Handle case where today is not in the initially rendered month (optional, but good practice)
-        clearSelection();
+        // If yesterday is not visible (e.g., it's the 1st of the month and yesterday was last month),
+        // fall back to selecting today if visible, otherwise clear selection.
+        const today = new Date();
+        const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const todayCell = calendarEl.querySelector(`.calendar-day[data-date="${todayString}"]`);
+        if (todayCell) {
+            selectDate(todayCell, todayString);
+        }
     }
 
     // --- Data Export ---

@@ -69,7 +69,7 @@ h1 {
     cursor: pointer;
     border-radius: 3px;
     position: relative; /* Keep for potential future use, though less critical now */
-    min-height: 35px; /* Ensure a minimum height for cells */
+    min-height: 38px; /* Increase min-height for more vertical space */
     box-sizing: border-box;
 }
 
@@ -88,21 +88,30 @@ h1 {
 .calendar-day.header {
     /* ヘッダーのflex設定をリセット */
     display: block;
-    padding: 5px 3px; /* ヘッダーのパディングを復元 */
+    padding: 3px 3px; /* Reduce vertical padding */
     font-weight: bold;
     cursor: default;
     background-color: #eee;
     min-height: auto; /* ヘッダーの最小高さをリセット */
+    line-height: 1.2; /* Adjust line height */
 }
 
 .calendar-day.today {
-    background-color: #ffeb3b; /* Highlight today's date */
+    background-color: #fff9c4; /* Slightly darker light yellow for today */
 }
 
 .calendar-day.selected {
-    background-color: #007bff;
-    /* color: white; は .date-number で適用 */
+    /* Remove background color */
+    /* Add border */
+    border: 2px solid #ffeb3b; /* Use today's highlight color for border */
+    /* Adjust padding slightly to account for border width */
+    padding: 0px 1px; /* Original padding was 2px 3px. Border is 2px. */
 }
+.calendar-day.selected .date-number {
+     /* Reset color to default .date-number color */
+     color: #555;
+}
+
 
 .calendar-day.other-month {
     color: #ccc;
@@ -120,7 +129,7 @@ h1 {
 
 .mood-indicator {
     /* 気分アイコン自体のスタイル */
-    font-size: 1.1em; /* 少し大きく */
+    font-size: 1.0em; /* Reduce mood icon size slightly */
     line-height: 1;
     /* 絶対位置指定を削除 */
 }
