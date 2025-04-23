@@ -1,13 +1,25 @@
+html, body {
+    height: 100%; /* Ensure body takes full height */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling */
+}
+
 body {
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    /* Reduced padding, especially top/bottom */
+    padding: 5px 10px;
     background-color: #f4f4f4;
+    box-sizing: border-box; /* Include padding in height calculation */
+    height: 100vh; /* Explicitly set viewport height */
 }
 
 h1 {
+    /* Reduced margin */
+    margin: 5px 0;
     color: #333;
 }
 
@@ -16,11 +28,13 @@ h1 {
     justify-content: space-between;
     align-items: center;
     width: 300px;
-    margin-bottom: 10px;
+    /* Reduced margin */
+    margin-bottom: 5px;
 }
 
 #calendar-controls button {
-    padding: 5px 10px;
+    /* Slightly reduced padding */
+    padding: 3px 8px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -31,26 +45,54 @@ h1 {
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    /* Reduced gap */
+    gap: 3px;
     width: 300px;
     background-color: #fff;
-    padding: 10px;
+    /* Reduced padding */
+    padding: 5px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    /* Allow calendar to shrink if needed, but not grow excessively */
+    flex-shrink: 1;
 }
 
 .calendar-day {
+    /* Use flexbox for vertical layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: flex-start; /* Align items to the top */
     text-align: center;
-    padding: 10px 5px;
+    /* Reduced padding */
+    padding: 2px 3px; /* Further reduce padding */
     cursor: pointer;
     border-radius: 3px;
-    position: relative; /* For mood indicator positioning */
+    position: relative; /* Keep for potential future use, though less critical now */
+    min-height: 35px; /* Ensure a minimum height for cells */
+    box-sizing: border-box;
+}
+
+.date-number {
+    font-size: 0.7em; /* Smaller font size for the date */
+    line-height: 1; /* Reduce line height */
+    display: block; /* Ensure it takes its own line */
+    margin-bottom: 2px; /* Small space below date */
+    color: #555; /* Slightly dimmer color for date */
+}
+
+.calendar-day.selected .date-number {
+    color: white; /* Make date white when selected */
 }
 
 .calendar-day.header {
+    /* ヘッダーのflex設定をリセット */
+    display: block;
+    padding: 5px 3px; /* ヘッダーのパディングを復元 */
     font-weight: bold;
     cursor: default;
     background-color: #eee;
+    min-height: auto; /* ヘッダーの最小高さをリセット */
 }
 
 .calendar-day.today {
@@ -59,7 +101,7 @@ h1 {
 
 .calendar-day.selected {
     background-color: #007bff;
-    color: white;
+    /* color: white; は .date-number で適用 */
 }
 
 .calendar-day.other-month {
@@ -67,35 +109,47 @@ h1 {
     cursor: default;
 }
 
+.mood-indicator-container {
+    /* 気分アイコン用コンテナ */
+    flex-grow: 1; /* 残りのスペースを埋める */
+    display: flex;
+    align-items: center; /* 垂直中央揃え */
+    justify-content: center; /* 水平中央揃え */
+    width: 100%;
+}
+
 .mood-indicator {
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7em;
+    /* 気分アイコン自体のスタイル */
+    font-size: 1.1em; /* 少し大きく */
+    line-height: 1;
+    /* 絶対位置指定を削除 */
 }
 
 
 #mood-section {
-    margin-top: 20px;
+    /* Reduced margin */
+    margin-top: 10px;
     text-align: center;
     background-color: #fff;
-    padding: 15px;
+    /* Reduced padding */
+    padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     width: 300px;
 }
 
 #mood-display {
-    font-size: 2em;
-    margin: 10px 0;
+    /* Reduced font size and margin */
+    font-size: 1.8em;
+    margin: 5px 0;
     min-height: 1.5em; /* Ensure space even when no mood */
 }
 
 #mood-buttons button {
-    font-size: 1.5em;
-    padding: 10px;
-    margin: 0 5px;
+    /* Reduced font size and padding */
+    font-size: 1.3em;
+    padding: 5px;
+    margin: 0 3px;
     border: none;
     background: none;
     cursor: pointer;
@@ -108,13 +162,15 @@ h1 {
 }
 
 #data-management {
-    margin-top: 20px;
+    /* Reduced margin */
+    margin-top: 10px;
     width: 300px; /* Match other sections */
     text-align: center;
 }
 
 #export-data {
-    padding: 8px 15px;
+    /* Reduced padding */
+    padding: 5px 10px;
     background-color: #28a745; /* Green color */
     color: white;
     border: none;

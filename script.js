@@ -3,10 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const monthYearEl = document.getElementById('month-year');
     const prevMonthBtn = document.getElementById('prev-month');
     const nextMonthBtn = document.getElementById('next-month');
-    const selectedDateEl = document.getElementById('selected-date');
+    // const selectedDateEl = document.getElementById('selected-date'); // No longer used directly for prompt
+    const moodPromptEl = document.getElementById('mood-prompt'); // Get the prompt element
+    const selectedDatePlaceholderEl = document.getElementById('selected-date-placeholder'); // Get the placeholder span
     const moodDisplayEl = document.getElementById('mood-display');
     const moodButtons = document.querySelectorAll('.mood-btn');
-    const exportBtn = document.getElementById('export-data'); // Added
+    const exportBtn = document.getElementById('export-data');
 
     let currentDate = new Date();
     let selectedDayElement = null;
@@ -62,21 +64,31 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let day = 1; day <= daysInMonth; day++) {
             const dayCell = document.createElement('div');
             dayCell.classList.add('calendar-day');
-            dayCell.textContent = day;
             const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             dayCell.dataset.date = fullDate;
+
+            // Create separate elements for date number and mood
+            const dateNumber = document.createElement('span');
+            dateNumber.classList.add('date-number');
+            dateNumber.textContent = day;
+            dayCell.appendChild(dateNumber);
+
+            const moodIndicatorContainer = document.createElement('div');
+            moodIndicatorContainer.classList.add('mood-indicator-container');
+            dayCell.appendChild(moodIndicatorContainer);
+
 
             // Highlight today
             if (fullDate === todayString) {
                 dayCell.classList.add('today');
             }
 
-            // Add mood indicator if mood exists
+            // Add mood indicator if mood exists (inside the container)
             if (moods[fullDate]) {
                 const moodIndicator = document.createElement('span');
                 moodIndicator.classList.add('mood-indicator');
                 moodIndicator.textContent = moods[fullDate];
-                dayCell.appendChild(moodIndicator);
+                moodIndicatorContainer.appendChild(moodIndicator); // Append to container
             }
 
             // Add click listener for date selection
@@ -93,7 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedDayElement = dayElement;
         selectedDayElement.classList.add('selected');
         selectedFullDate = fullDate;
-        selectedDateEl.textContent = fullDate;
+        // Update prompt text
+        const [year, month, day] = fullDate.split('-');
+        moodPromptEl.textContent = `${parseInt(month)}/${parseInt(day)} はどうだった？`; // Use MM/DD format
         displayMoodForSelectedDate();
     }
 
@@ -131,9 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function clearSelection() {
+        if (selectedDayElement) {
+            selectedDayElement.classList.remove('selected');
+        }
         selectedDayElement = null;
         selectedFullDate = null;
-        selectedDateEl.textContent = '日付を選択してください';
+        // Reset prompt to placeholder
+        moodPromptEl.innerHTML = ''; // Clear existing text
+        moodPromptEl.appendChild(selectedDatePlaceholderEl); // Re-add placeholder span
         moodDisplayEl.textContent = '記録なし';
     }
 
