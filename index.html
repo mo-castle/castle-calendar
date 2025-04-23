@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>気分カレンダー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>気分カレンダー</h1>
+
+    <div id="calendar-controls">
+        <button id="prev-month"><</button>
+        <h2 id="month-year"></h2>
+        <button id="next-month">></button>
+    </div>
+    <div id="calendar"></div>
+
+    <div id="mood-section">
+        <p><span id="selected-date">日付を選択してください</span> の気分:</p>
+        <div id="mood-display">記録なし</div>
+        <div id="mood-buttons">
+            <button class="mood-btn" data-mood="😊">😊</button>
+            <button class="mood-btn" data-mood="😐">😐</button>
+            <button class="mood-btn" data-mood="😥">😥</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

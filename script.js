@@ -1,0 +1,151 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const calendarEl = document.getElementById('calendar');
+    const monthYearEl = document.getElementById('month-year');
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
+    const selectedDateEl = document.getElementById('selected-date');
+    const moodDisplayEl = document.getElementById('mood-display');
+    const moodButtons = document.querySelectorAll('.mood-btn');
+
+    let currentDate = new Date();
+    let selectedDayElement = null;
+    let selectedFullDate = null; // YYYY-MM-DD format
+
+    // --- Local Storage ---
+    const moodStorageKey = 'moodCalendarData';
+
+    function getMoods() {
+        const moods = localStorage.getItem(moodStorageKey);
+        return moods ? JSON.parse(moods) : {};
+    }
+
+    function saveMood(date, mood) {
+        const moods = getMoods();
+        moods[date] = mood;
+        localStorage.setItem(moodStorageKey, JSON.stringify(moods));
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth()); // Re-render to show indicator
+        displayMoodForSelectedDate(); // Update display if the selected date was just updated
+    }
+
+    // --- Calendar Logic ---
+    function renderCalendar(year, month) {
+        calendarEl.innerHTML = ''; // Clear previous calendar
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const daysInMonth = lastDayOfMonth.getDate();
+        const startDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sunday, 1 = Monday, ...
+
+        monthYearEl.textContent = `${year}年 ${month + 1}月`;
+
+        // Add day headers (Sun, Mon, ...)
+        const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+        daysOfWeek.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.classList.add('calendar-day', 'header');
+            dayHeader.textContent = day;
+            calendarEl.appendChild(dayHeader);
+        });
+
+        // Add empty cells for days before the 1st
+        for (let i = 0; i < startDayOfWeek; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('calendar-day', 'other-month');
+            calendarEl.appendChild(emptyCell);
+        }
+
+        // Add day cells
+        const today = new Date();
+        const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const moods = getMoods();
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('calendar-day');
+            dayCell.textContent = day;
+            const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            dayCell.dataset.date = fullDate;
+
+            // Highlight today
+            if (fullDate === todayString) {
+                dayCell.classList.add('today');
+            }
+
+            // Add mood indicator if mood exists
+            if (moods[fullDate]) {
+                const moodIndicator = document.createElement('span');
+                moodIndicator.classList.add('mood-indicator');
+                moodIndicator.textContent = moods[fullDate];
+                dayCell.appendChild(moodIndicator);
+            }
+
+            // Add click listener for date selection
+            dayCell.addEventListener('click', () => selectDate(dayCell, fullDate));
+
+            calendarEl.appendChild(dayCell);
+        }
+    }
+
+    function selectDate(dayElement, fullDate) {
+        if (selectedDayElement) {
+            selectedDayElement.classList.remove('selected');
+        }
+        selectedDayElement = dayElement;
+        selectedDayElement.classList.add('selected');
+        selectedFullDate = fullDate;
+        selectedDateEl.textContent = fullDate;
+        displayMoodForSelectedDate();
+    }
+
+    function displayMoodForSelectedDate() {
+        if (selectedFullDate) {
+            const moods = getMoods();
+            moodDisplayEl.textContent = moods[selectedFullDate] || '記録なし';
+        } else {
+            moodDisplayEl.textContent = '記録なし';
+        }
+    }
+
+    // --- Event Listeners ---
+    prevMonthBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        clearSelection();
+    });
+
+    nextMonthBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        clearSelection();
+    });
+
+    moodButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (selectedFullDate) {
+                const mood = button.dataset.mood;
+                saveMood(selectedFullDate, mood);
+            } else {
+                alert('まず日付を選択してください。');
+            }
+        });
+    });
+
+    function clearSelection() {
+        selectedDayElement = null;
+        selectedFullDate = null;
+        selectedDateEl.textContent = '日付を選択してください';
+        moodDisplayEl.textContent = '記録なし';
+    }
+
+    // --- Initial Load ---
+    renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    // Select today's date by default
+    const today = new Date();
+    const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const todayCell = calendarEl.querySelector(`.calendar-day[data-date="${todayString}"]`);
+    if (todayCell) {
+        selectDate(todayCell, todayString);
+    } else {
+        // Handle case where today is not in the initially rendered month (optional, but good practice)
+        clearSelection();
+    }
+});

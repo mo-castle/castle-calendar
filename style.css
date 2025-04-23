@@ -1,0 +1,108 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+}
+
+#calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+#calendar-controls button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    width: 300px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 10px 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    position: relative; /* For mood indicator positioning */
+}
+
+.calendar-day.header {
+    font-weight: bold;
+    cursor: default;
+    background-color: #eee;
+}
+
+.calendar-day.today {
+    background-color: #ffeb3b; /* Highlight today's date */
+}
+
+.calendar-day.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+    cursor: default;
+}
+
+.mood-indicator {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7em;
+}
+
+
+#mood-section {
+    margin-top: 20px;
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+#mood-display {
+    font-size: 2em;
+    margin: 10px 0;
+    min-height: 1.5em; /* Ensure space even when no mood */
+}
+
+#mood-buttons button {
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 0 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+#mood-buttons button:hover {
+    background-color: #eee;
+}
