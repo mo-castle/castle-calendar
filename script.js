@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedDateEl = document.getElementById('selected-date');
     const moodDisplayEl = document.getElementById('mood-display');
     const moodButtons = document.querySelectorAll('.mood-btn');
+    const exportBtn = document.getElementById('export-data'); // Added
 
     let currentDate = new Date();
     let selectedDayElement = null;
@@ -148,4 +149,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Handle case where today is not in the initially rendered month (optional, but good practice)
         clearSelection();
     }
+
+    // --- Data Export ---
+    function exportData() {
+        const moods = getMoods();
+        if (Object.keys(moods).length === 0) {
+            alert('エクスポートするデータがありません。');
+            return;
+        }
+
+        const dataStr = JSON.stringify(moods, null, 2); // Pretty print JSON
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        link.download = `mood-calendar-data-${timestamp}.json`; // Suggest filename
+
+        // Append to body, click, and remove (necessary for Firefox)
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+
+        URL.revokeObjectURL(url); // Clean up the object URL
+    }
+
+    exportBtn.addEventListener('click', exportData); // Added listener
+
 });

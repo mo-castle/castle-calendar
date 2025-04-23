@@ -106,3 +106,23 @@ h1 {
 #mood-buttons button:hover {
     background-color: #eee;
 }
+
+#data-management {
+    margin-top: 20px;
+    width: 300px; /* Match other sections */
+    text-align: center;
+}
+
+#export-data {
+    padding: 8px 15px;
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+#export-data:hover {
+    background-color: #218838;
+}
