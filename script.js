@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // const selectedDateEl = document.getElementById('selected-date'); // No longer used directly for prompt
     const moodPromptEl = document.getElementById('mood-prompt'); // Get the prompt element
     const selectedDatePlaceholderEl = document.getElementById('selected-date-placeholder'); // Get the placeholder span
-    const moodDisplayEl = document.getElementById('mood-display');
-    const moodButtons = document.querySelectorAll('.mood-btn');
+    // const moodDisplayEl = document.getElementById('mood-display'); // Removed
+    const moodButtons = document.querySelectorAll('.mood-btn'); // Gets 😊, 😥
     const exportBtn = document.getElementById('export-data');
 
     let currentDate = new Date();
@@ -26,8 +26,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const moods = getMoods();
         moods[date] = mood;
         localStorage.setItem(moodStorageKey, JSON.stringify(moods));
-        renderCalendar(currentDate.getFullYear(), currentDate.getMonth()); // Re-render to show indicator
-        displayMoodForSelectedDate(); // Update display if the selected date was just updated
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth()); // Re-enable calendar re-render
+        updateMoodButtonHighlight(date); // Keep button highlight update
+    }
+
+    // Function to clear mood for a specific date
+    function clearMood(date) {
+        const moods = getMoods();
+        if (moods[date]) { // Check if there is a mood to clear
+            delete moods[date]; // Remove the entry for the date
+            localStorage.setItem(moodStorageKey, JSON.stringify(moods));
+            renderCalendar(currentDate.getFullYear(), currentDate.getMonth()); // Re-enable calendar re-render
+            updateMoodButtonHighlight(date); // Keep button highlight update
+        }
+    }
+
+    // Function to update mood button highlights based on stored mood for the date
+    function updateMoodButtonHighlight(date) {
+        const moods = getMoods();
+        const currentMood = moods[date];
+
+        moodButtons.forEach(button => {
+            if (button.dataset.mood === currentMood) {
+                button.classList.add('selected-mood'); // Add highlight class
+            } else {
+                button.classList.remove('selected-mood'); // Remove highlight class
+            }
+        });
     }
 
     // --- Calendar Logic ---
@@ -73,17 +98,17 @@ document.addEventListener('DOMContentLoaded', () => {
             dateNumber.textContent = day;
             dayCell.appendChild(dateNumber);
 
+            // Re-add mood indicator container
             const moodIndicatorContainer = document.createElement('div');
             moodIndicatorContainer.classList.add('mood-indicator-container');
             dayCell.appendChild(moodIndicatorContainer);
-
 
             // Highlight today
             if (fullDate === todayString) {
                 dayCell.classList.add('today');
             }
 
-            // Add mood indicator if mood exists (inside the container)
+            // Re-add mood indicator adding logic
             if (moods[fullDate]) {
                 const moodIndicator = document.createElement('span');
                 moodIndicator.classList.add('mood-indicator');
@@ -97,21 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarEl.appendChild(dayCell);
         }
 
-        // Re-apply selected class if a date is currently selected
+        // Re-apply selected class to the date cell if a date is currently selected
+        // This is separate from mood button highlight
         if (selectedFullDate) {
             const selectedCell = calendarEl.querySelector(`.calendar-day[data-date="${selectedFullDate}"]`);
             if (selectedCell) {
                 selectedCell.classList.add('selected');
-                // Ensure the selectedDayElement variable also points to the new element
-                selectedDayElement = selectedCell;
+                selectedDayElement = selectedCell; // Keep track of the selected cell element
             } else {
-                // If the selected date is not in the current month view, clear selection visually
-                // (This might happen if user selects a date then navigates months before mood save finishes re-render)
-                 selectedDayElement = null; // Clear the reference
-                 // selectedFullDate remains, so prompt stays correct until new selection
+                 selectedDayElement = null;
             }
         }
     }
+
 
     function selectDate(dayElement, fullDate) {
         if (selectedDayElement) {
@@ -138,17 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             moodPromptEl.textContent = `${displayDate} はどうだった？`;
         }
-        displayMoodForSelectedDate();
+        // displayMoodForSelectedDate(); // Removed call
+        updateMoodButtonHighlight(fullDate); // Update button highlights for the selected date
     }
 
-    function displayMoodForSelectedDate() {
-        if (selectedFullDate) {
-            const moods = getMoods();
-            moodDisplayEl.textContent = moods[selectedFullDate] || '-'; // Changed '記録なし' to '-'
-        } else {
-            moodDisplayEl.textContent = '-'; // Changed '記録なし' to '-'
-        }
-    }
+    // Removed displayMoodForSelectedDate function
 
     // --- Event Listeners ---
     prevMonthBtn.addEventListener('click', () => {
@@ -166,13 +183,24 @@ document.addEventListener('DOMContentLoaded', () => {
     moodButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (selectedFullDate) {
-                const mood = button.dataset.mood;
-                saveMood(selectedFullDate, mood);
+                const clickedMood = button.dataset.mood;
+                const moods = getMoods();
+                const currentSavedMood = moods[selectedFullDate];
+
+                // If the clicked button's mood is the same as the currently saved mood, clear it
+                if (clickedMood === currentSavedMood) {
+                    clearMood(selectedFullDate);
+                } else {
+                    // Otherwise, save the new mood
+                    saveMood(selectedFullDate, clickedMood);
+                }
             } else {
                 alert('まず日付を選択してください。');
             }
         });
     });
+
+    // Remove the separate event listener for clearMoodBtn
 
     function clearSelection() {
         if (selectedDayElement) {
@@ -183,7 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset prompt to placeholder
         moodPromptEl.innerHTML = ''; // Clear existing text
         moodPromptEl.appendChild(selectedDatePlaceholderEl); // Re-add placeholder span
-        moodDisplayEl.textContent = '-'; // Changed '記録なし' to '-'
+        // moodDisplayEl.textContent = '-'; // Removed
+
+        // Clear mood button highlights
+        moodButtons.forEach(button => button.classList.remove('selected-mood'));
     }
 
     // --- Initial Load ---
