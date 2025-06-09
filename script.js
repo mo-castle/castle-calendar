@@ -276,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataManagement = document.getElementById('data-management');
     const oneWeekBtn = document.getElementById('one-week');
     const oneMonthBtn = document.getElementById('one-month');
+    const threeMonthBtn = document.getElementById('three-month');
     const oneYearBtn = document.getElementById('one-year');
 
     let graphRange = 7; // Default to 1 week
@@ -306,6 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     oneMonthBtn.addEventListener('click', () => {
         graphRange = 30;
+        renderMoodGraph();
+    });
+
+    threeMonthBtn.addEventListener('click', () => {
+        graphRange = 90;
         renderMoodGraph();
     });
 
