@@ -1,8 +1,8 @@
 html, body {
-    height: 100%; /* Ensure body takes full height */
+    height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevent scrolling */
+    overflow: hidden;
 }
 
 body {
@@ -10,15 +10,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Reduced padding, especially top/bottom */
     padding: 5px 10px;
     background-color: #f4f4f4;
-    box-sizing: border-box; /* Include padding in height calculation */
-    height: 100vh; /* Explicitly set viewport height */
+    box-sizing: border-box;
+    height: 100vh;
 }
 
 h1 {
-    /* Reduced margin */
     margin: 5px 0;
     color: #333;
 }
@@ -28,12 +26,10 @@ h1 {
     justify-content: space-between;
     align-items: center;
     width: 300px;
-    /* Reduced margin */
     margin-bottom: 5px;
 }
 
 #calendar-controls button {
-    /* Slightly reduced padding */
     padding: 3px 8px;
     background-color: #007bff;
     color: white;
@@ -45,103 +41,85 @@ h1 {
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    /* Reduced gap */
     gap: 3px;
     width: 300px;
     background-color: #fff;
-    /* Reduced padding */
     padding: 5px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    /* Allow calendar to shrink if needed, but not grow excessively */
     flex-shrink: 1;
 }
 
 .calendar-day {
-    /* Use flexbox for vertical layout */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items horizontally */
-    justify-content: flex-start; /* Align items to the top */
+    align-items: center;
+    justify-content: flex-start;
     text-align: center;
-    /* Reduced padding */
-    padding: 2px 3px; /* Further reduce padding */
+    padding: 2px 3px;
     cursor: pointer;
     border-radius: 3px;
-    position: relative; /* Keep for potential future use, though less critical now */
-    min-height: 38px; /* Increase min-height for more vertical space */
+    position: relative;
+    min-height: 38px;
     box-sizing: border-box;
 }
 
 .date-number {
-    font-size: 0.7em; /* Smaller font size for the date */
-    line-height: 1; /* Reduce line height */
-    display: block; /* Ensure it takes its own line */
-    margin-bottom: 2px; /* Small space below date */
-    color: #555; /* Slightly dimmer color for date */
+    font-size: 0.7em;
+    line-height: 1;
+    display: block;
+    margin-bottom: 2px;
+    color: #555;
 }
 
 .calendar-day.selected .date-number {
-    color: white; /* Make date white when selected */
+    color: white;
 }
 
 .calendar-day.header {
-    /* ヘッダーのflex設定をリセット */
     display: block;
-    padding: 3px 3px; /* Reduce vertical padding */
+    padding: 3px 3px;
     font-weight: bold;
     cursor: default;
     background-color: #eee;
-    min-height: auto; /* ヘッダーの最小高さをリセット */
-    line-height: 1.2; /* Adjust line height */
+    min-height: auto;
+    line-height: 1.2;
 }
 
 .calendar-day.today {
-    background-color: #fff9c4; /* Slightly darker light yellow for today */
+    background-color: #fff9c4;
 }
 
 .calendar-day.selected {
-    /* Remove background color */
-    /* Add border */
-    border: 2px solid #ffeb3b; /* Use today's highlight color for border */
-    /* Adjust padding slightly to account for border width */
-    padding: 0px 1px; /* Original padding was 2px 3px. Border is 2px. */
+    border: 2px solid #ffeb3b;
+    padding: 0px 1px;
 }
 .calendar-day.selected .date-number {
-     /* Reset color to default .date-number color */
      color: #555;
 }
-
 
 .calendar-day.other-month {
     color: #ccc;
     cursor: default;
 }
 
-/* Re-add styles for mood indicator */
 .mood-indicator-container {
-    /* 気分アイコン用コンテナ */
-    flex-grow: 1; /* 残りのスペースを埋める */
+    flex-grow: 1;
     display: flex;
-    align-items: center; /* 垂直中央揃え */
-    justify-content: center; /* 水平中央揃え */
+    align-items: center;
+    justify-content: center;
     width: 100%;
 }
 
 .mood-indicator {
-    /* 気分アイコン自体のスタイル */
-    font-size: 1.0em; /* Reduce mood icon size slightly */
+    font-size: 1.0em;
     line-height: 1;
-    /* 絶対位置指定を削除 */
 }
 
-
 #mood-section {
-    /* Reduced margin */
     margin-top: 10px;
     text-align: center;
     background-color: #fff;
-    /* Reduced padding */
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -149,14 +127,12 @@ h1 {
 }
 
 #mood-display {
-    /* Reduced font size and margin */
     font-size: 1.8em;
     margin: 5px 0;
-    min-height: 1.5em; /* Ensure space even when no mood */
+    min-height: 1.5em;
 }
 
 #mood-buttons button {
-    /* Reduced font size and padding */
     font-size: 1.3em;
     padding: 5px;
     margin: 0 3px;
@@ -165,32 +141,27 @@ h1 {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.2s;
-    /* Add border for selected mood button */
-    border: 2px solid transparent; /* Add transparent border for layout consistency */
-    box-sizing: border-box; /* Include border in size */
+    border: 2px solid transparent;
+    box-sizing: border-box;
 }
 
 #mood-buttons button.selected-mood {
-    border-color: #ffeb3b; /* Yellow border for selected mood */
+    border-color: #ffeb3b;
 }
 
-
-#mood-buttons button:hover { /* Apply hover only to mood buttons */
+#mood-buttons button:hover {
     background-color: #eee;
 }
 
-
 #data-management {
-    /* Reduced margin */
     margin-top: 10px;
-    width: 300px; /* Match other sections */
+    width: 300px;
     text-align: center;
 }
 
 #export-data {
-    /* Reduced padding */
     padding: 5px 10px;
-    background-color: #28a745; /* Green color */
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
@@ -200,4 +171,60 @@ h1 {
 
 #export-data:hover {
     background-color: #218838;
+}
+
+#show-graph {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+    width: 300px;
+    position: relative;
+}
+
+#show-graph:hover {
+    background-color: #0056b3;
+}
+
+#graph-container {
+    display: none;
+    width: 100%;
+    height: 900px; /* Adjust as needed */
+    margin-top: 20px;
+    text-align: center; /* Center the buttons */
+}
+
+#graph-range-buttons {
+    margin-top: 10px;
+}
+
+#graph-range-buttons button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin: 0 5px; /* Add some spacing between buttons */
+}
+
+#graph-range-buttons button:hover {
+    background-color: #0056b3;
+}
+
+#show-graph {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+    width: 300px;
 }
