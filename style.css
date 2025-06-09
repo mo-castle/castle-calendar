@@ -213,7 +213,8 @@ h1 {
     margin: 0 5px; /* Add some spacing between buttons */
 }
 
-#graph-range-buttons button:hover {
+#graph-range-buttons button:hover,
+#graph-range-buttons button.selected-range {
     background-color: #0056b3;
 }
 

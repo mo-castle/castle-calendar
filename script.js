@@ -279,7 +279,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const threeMonthBtn = document.getElementById('three-month');
     const oneYearBtn = document.getElementById('one-year');
 
-    let graphRange = 7; // Default to 1 week
+    let graphRange = 30; // Default to 1 month
+    let selectedRangeButton = oneMonthBtn; // Initially select 1 month button
+    selectedRangeButton.classList.add('selected-range');
+
+    function updateSelectedRangeButton(newButton) {
+        selectedRangeButton.classList.remove('selected-range');
+        newButton.classList.add('selected-range');
+        selectedRangeButton = newButton;
+    }
 
     showGraphBtn.addEventListener('click', () => {
         if (graphContainer.style.display === 'none') {
@@ -302,21 +310,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     oneWeekBtn.addEventListener('click', () => {
         graphRange = 7;
+        updateSelectedRangeButton(oneWeekBtn);
         renderMoodGraph();
     });
 
     oneMonthBtn.addEventListener('click', () => {
         graphRange = 30;
+        updateSelectedRangeButton(oneMonthBtn);
         renderMoodGraph();
     });
 
     threeMonthBtn.addEventListener('click', () => {
         graphRange = 90;
+        updateSelectedRangeButton(threeMonthBtn);
         renderMoodGraph();
     });
 
     oneYearBtn.addEventListener('click', () => {
         graphRange = 365;
+        updateSelectedRangeButton(oneYearBtn);
         renderMoodGraph();
     });
 
