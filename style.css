@@ -1,237 +1,106 @@
 html, body {
-  min-height: 100svh;
-  height: 100dvh;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+  background: #f8f9fa;
+  overscroll-behavior: none;
 }
 body {
-  min-height: 100svh;
   height: 100dvh;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background: #f8f8f8;
   overflow: hidden;
 }
-#app-root {
+.container {
   display: flex;
   flex-direction: column;
-  min-height: 100svh;
   height: 100dvh;
-  height: 100vh;
   width: 100vw;
-  max-width: 480px;
+  max-width: 430px; /* iPhone15 Pro Max 幅 */
   margin: 0 auto;
-  box-sizing: border-box;
-  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 8px #ddd;
 }
-h1 {
-  flex: 0 0 8.7%;
-  min-height: 0;
-  max-height: none;
+.title-area {
+  flex: 0 0 8%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
-  font-size: 1.3em;
-  background: #f8f8f8;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  background: #e3f2fd;
 }
-#graph-section {
+.graph-area {
   flex: 0 0 27%;
-  min-height: 0;
-  max-height: none;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  width: 100vw;
-  max-width: 480px;
-  background: #fff;
-  padding: 0 0 4px 0;
-  box-sizing: border-box;
-  margin-bottom: 0;
-}
-#graph-range-buttons {
-  display: flex;
   justify-content: center;
-  gap: 8px;
-  margin: 8px 0 2px 0;
+  background: #f1f8e9;
 }
-#graph-range-buttons button {
-  padding: 4px 10px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  background: #f0f0f0;
-  font-size: 0.95em;
-  cursor: pointer;
+#condition-graph {
+  width: 95%;
+  height: 90%;
 }
-#graph-range-buttons .selected-range {
-  background: #4dd0e1;
-  color: #fff;
-  border: 1.5px solid #0097a7;
-}
-#mood-chart {
-  width: 98% !important;
-  max-width: 440px;
-  height: 100% !important;
-  min-height: 0;
-  max-height: none;
-  flex: 1 1 auto;
-  background: #fff;
-  box-sizing: border-box;
-}
-#calendar-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
-  margin: 0.5em 0 0.2em 0;
-}
-#calendar {
+.calendar-area {
   flex: 0 0 35%;
-  min-height: 0;
-  max-height: none;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  width: 90%;
-  max-width: 432px;
-  background: #fff;
-  border-radius: 8px;
-  box-sizing: border-box;
-  padding: 4px 12px 4px 12px;
-  margin: 0 auto 0 auto;
-}
-#month-year {
-  font-size: 0.37em;
-  font-weight: bold;
-  margin: 0 0.5em;
-}
-.calendar-day {
-  aspect-ratio: 1/1;
-  min-width: 32px;
-  max-width: 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 1em;
-  background: #f9f9f9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  padding: 2px 0 0 0;
-}
-.calendar-day.header {
-  background: #e0f7fa;
-  font-weight: bold;
-  cursor: default;
-  height: 22px;
-  line-height: 22px;
-  font-size: 0.9em;
-}
-.calendar-day.today {
-  border: 2px solid #4dd0e1;
-}
-.calendar-day.selected {
-  background: #b2ebf2;
-  border: 2px solid #0097a7;
-}
-.calendar-day .date-number {
-  font-size: 1em;
-  margin-bottom: 2px;
-}
-.mood-indicator-container {
-  height: 1.2em;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fffde7;
 }
-.mood-indicator {
-  font-size: 1.1em;
-}
-.calendar-mood-gap {
+.calendar-input-space {
   flex: 0 0 3%;
 }
-#mood-section {
-  position: static;
-  left: auto;
-  right: auto;
-  bottom: auto;
-  z-index: auto;
+.input-area {
   flex: 0 0 16%;
-  min-height: 24px;
-  max-height: 60px;
-  width: 100vw;
-  max-width: 480px;
-  margin: 0 auto;
-  background: #fff;
-  border-top: 1.5px solid #b2ebf2;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
-  padding: 0.2em 0 0.3em 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  background: #e1bee7;
 }
-#mood-prompt {
-  font-size: 0.95em;
-  margin: 0.1em 0 0.3em 0;
+.input-label {
+  font-size: 1.1rem;
+  margin-bottom: 0.5em;
 }
-#mood-buttons {
-  gap: 1em;
-}
-.mood-btn {
-  font-size: 1.5em;
-}
-#data-management {
-  flex: 0 0 11%;
-  min-height: 32px;
-  max-height: 48px;
-  width: 100vw;
-  max-width: 480px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  overflow: hidden;
-}
-#export-data {
-  padding: 4px 12px;
-  border-radius: 10px;
-  border: 1px solid #0097a7;
-  background: #e0f7fa;
-  color: #0097a7;
-  font-size: 1em;
+.input-buttons button {
+  font-size: 2rem;
+  margin: 0 1em;
+  border: none;
+  background: #fff;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  box-shadow: 0 2px 6px #ccc;
   cursor: pointer;
+  transition: background 0.2s;
 }
-body, html {
-  overflow-y: hidden;
+.input-buttons button:active {
+  background: #b2dfdb;
 }
-@media (max-width: 500px) {
-  #app-root, #graph-section, #calendar, #mood-section, #data-management {
+.data-buttons-area {
+  flex: 0 0 11%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background: #ffe0b2;
+}
+.data-buttons-area button {
+  font-size: 1rem;
+  padding: 0.8em 1.5em;
+  border: none;
+  border-radius: 1.5em;
+  background: #fff;
+  box-shadow: 0 2px 6px #ccc;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.data-buttons-area button:active {
+  background: #ffe082;
+}
+@media (max-width: 430px) {
+  .container {
     max-width: 100vw;
   }
-  #app-root {
-    padding-bottom: 70px;
-  }
-  #calendar {
-    padding-bottom: 78px;
-  }
-  #mood-section {
-    min-height: 44px;
-    max-height: 70px;
-  }
-  #data-management {
-    min-height: 20px;
-    max-height: 36px;
-  }
-}
+} 

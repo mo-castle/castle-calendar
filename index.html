@@ -1,40 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日常カレンダー</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>日常カレンダー</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app-root">
-    <h1>日常カレンダー</h1>
-    <div id="graph-section">
-        <div id="graph-range-buttons">
-            <button id="one-month">1か月</button>
-            <button id="three-month">3か月</button>
-            <button id="half-year">半年</button>
-            <button id="one-year">1年</button>
-        </div>
-        <canvas id="mood-chart" width="400" height="160"></canvas>
-    </div>
-    <div id="calendar-controls">
-        <button id="prev-month"><</button>
-        <h2 id="month-year"></h2>
-        <button id="next-month">></button>
-    </div>
-    <div id="calendar"></div>
-    <div id="mood-section">
-        <p id="mood-prompt"><span id="selected-date-placeholder">日付を選択してください</span></p>
-        <div id="mood-buttons">
-            <button class="mood-btn" data-mood="😊">😊</button>
-            <button class="mood-btn" data-mood="😥">😥</button>
-        </div>
-    </div>
-    <div id="data-management">
-        <button id="export-data">データをエクスポート (JSON)</button>
-    </div>
+  <div class="container">
+    <header class="title-area">日常カレンダー</header>
+    <section class="graph-area">
+      <canvas id="condition-graph"></canvas>
+    </section>
+    <section class="calendar-area">
+      <!-- カレンダー本体（後で実装） -->
+    </section>
+    <div class="calendar-input-space"></div>
+    <section class="input-area">
+      <div class="input-label">調子入力</div>
+      <div class="input-buttons">
+        <button id="happy-btn" aria-label="にっこり">😊</button>
+        <button id="sad-btn" aria-label="悲しい">😢</button>
+      </div>
+    </section>
+    <section class="data-buttons-area">
+      <button id="export-btn">データ出力</button>
+      <button id="import-btn">データ読み込み</button>
+    </section>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
+</html> 
