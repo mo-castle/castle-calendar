@@ -3,7 +3,7 @@ html, body {
   min-height: 0;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 body {
@@ -15,7 +15,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   background: #f8f8f8;
-  overflow: hidden;
+  overflow-y: auto;
 }
 #app-root {
   display: flex;
@@ -26,24 +26,22 @@ body {
   max-width: 480px;
   margin: 0 auto;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 h1 {
   flex: 0 0 auto;
-  height: 36px;
   min-height: 32px;
-  max-height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  margin: 0 0 4px 0;
   font-size: 1.3em;
   background: #f8f8f8;
 }
 #graph-section {
-  flex: 0 0 auto;
-  height: 32vw;
-  min-height: 120px;
-  max-height: 240px;
+  flex: 0 1 180px;
+  min-height: 100px;
+  max-height: 260px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,9 +49,9 @@ h1 {
   width: 100vw;
   max-width: 480px;
   background: #fff;
-  padding: 0;
+  padding: 0 0 8px 0;
   box-sizing: border-box;
-  overflow: hidden;
+  margin-bottom: 6px;
 }
 #graph-range-buttons {
   display: flex;
@@ -77,10 +75,9 @@ h1 {
 #mood-chart {
   width: 98% !important;
   max-width: 440px;
-  height: 28vw !important;
-  min-height: 100px;
+  min-height: 80px;
   max-height: 200px;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   background: #fff;
   box-sizing: border-box;
 }
@@ -92,10 +89,9 @@ h1 {
   margin: 0.5em 0 0.2em 0;
 }
 #calendar {
-  flex: 0 0 auto;
-  height: 34vw;
+  flex: 1 1 240px;
   min-height: 180px;
-  max-height: 320px;
+  max-height: 340px;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
@@ -105,8 +101,7 @@ h1 {
   border-radius: 8px;
   box-sizing: border-box;
   padding: 4px 0 8px 0;
-  overflow: visible;
-  flex-shrink: 0;
+  margin-bottom: 8px;
 }
 .calendar-day {
   aspect-ratio: 1/1;
@@ -150,12 +145,11 @@ h1 {
 }
 #mood-section {
   flex: 0 0 auto;
-  height: 56px;
   min-height: 48px;
-  max-height: 70px;
+  max-height: 80px;
   width: 100vw;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 0 auto 8px auto;
   background: #fff;
   border-top: 1.5px solid #b2ebf2;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
@@ -188,12 +182,11 @@ h1 {
 }
 #data-management {
   flex: 0 0 auto;
-  height: 36px;
-  min-height: 28px;
+  min-height: 32px;
   max-height: 48px;
   width: 100vw;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 0 auto 8px auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -214,27 +207,18 @@ h1 {
     max-width: 100vw;
   }
   #calendar {
-    height: 44vw;
     min-height: 120px;
     max-height: 260px;
   }
   #graph-section {
-    height: 36vw;
-    min-height: 100px;
-    max-height: 180px;
-  }
-  #mood-chart {
-    height: 32vw !important;
     min-height: 80px;
     max-height: 160px;
   }
   #mood-section {
-    height: 48px;
     min-height: 36px;
     max-height: 60px;
   }
   #data-management {
-    height: 28px;
     min-height: 20px;
     max-height: 36px;
   }
