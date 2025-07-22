@@ -313,7 +313,20 @@ document.addEventListener('DOMContentLoaded', () => {
         renderMoodGraph();
     });
 
+    // グラフのcanvasサイズをウィンドウ幅に合わせて調整
+    function resizeMoodChartCanvas() {
+        const canvas = document.getElementById('mood-chart');
+        const parent = canvas.parentElement;
+        // 画面幅に応じて幅・高さを調整
+        let w = Math.min(parent.offsetWidth * 0.98, 440);
+        let h = Math.max(Math.round(w * 0.4), 100); // アスペクト比維持
+        canvas.width = w;
+        canvas.height = h;
+    }
+
+    // グラフ描画前にcanvasサイズを調整
     function renderMoodGraph() {
+        resizeMoodChartCanvas();
         const moods = getMoods();
         const today = new Date();
         const moodHistory = [];
@@ -400,4 +413,9 @@ document.addEventListener('DOMContentLoaded', () => {
         originalClearMood(date);
         renderMoodGraph();
     };
+
+    // ウィンドウリサイズ時にもグラフを再描画
+    window.addEventListener('resize', () => {
+        renderMoodGraph();
+    });
 });
