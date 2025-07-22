@@ -44,7 +44,7 @@ h1 {
   background: #f8f8f8;
 }
 #graph-section {
-  flex: 0 0 40%;
+  flex: 0 0 27%;
   min-height: 0;
   max-height: none;
   display: flex;
@@ -95,7 +95,7 @@ h1 {
   margin: 0.5em 0 0.2em 0;
 }
 #calendar {
-  flex: 0 0 30%;
+  flex: 0 0 35%;
   min-height: 0;
   max-height: none;
   display: grid;
@@ -157,17 +157,20 @@ h1 {
 .mood-indicator {
   font-size: 1.1em;
 }
+.calendar-mood-gap {
+  flex: 0 0 3%;
+}
 #mood-section {
-  flex: 0 0 13%;
-  min-height: 0;
-  max-height: none;
+  flex: 0 0 16%;
+  min-height: 24px;
+  max-height: 60px;
   width: 100vw;
   max-width: 480px;
   margin: 0 auto;
   background: #fff;
   border-top: 1.5px solid #b2ebf2;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
-  padding: 0.5em 0 0.7em 0;
+  padding: 0.2em 0 0.3em 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -175,28 +178,19 @@ h1 {
   overflow: hidden;
 }
 #mood-prompt {
-  margin: 0.2em 0 0.5em 0;
-  font-size: 1.1em;
+  font-size: 0.95em;
+  margin: 0.1em 0 0.3em 0;
 }
 #mood-buttons {
-  display: flex;
-  gap: 1.5em;
+  gap: 1em;
 }
 .mood-btn {
-  font-size: 2.1em;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-.mood-btn.selected-mood {
-  transform: scale(1.25);
-  filter: drop-shadow(0 0 4px #4dd0e1);
+  font-size: 1.5em;
 }
 #data-management {
-  flex: 0 0 8.7%;
-  min-height: 0;
-  max-height: none;
+  flex: 0 0 11%;
+  min-height: 32px;
+  max-height: 48px;
   width: 100vw;
   max-width: 480px;
   margin: 0 auto;

@@ -353,6 +353,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }]
             },
             options: {
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
                 scales: {
                     y: {
                         min: -15,
