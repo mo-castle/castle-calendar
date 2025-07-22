@@ -1,13 +1,16 @@
 html, body {
+  min-height: 100svh;
   height: 100dvh;
-  min-height: 0;
+  height: 100vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   overflow-y: hidden;
 }
 body {
+  min-height: 100svh;
   height: 100dvh;
+  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -19,12 +22,15 @@ body {
 #app-root {
   display: flex;
   flex-direction: column;
+  min-height: 100svh;
   height: 100dvh;
+  height: 100vh;
   width: 100vw;
   max-width: 480px;
   margin: 0 auto;
   box-sizing: border-box;
   overflow-y: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 24px);
 }
 h1 {
   flex: 0 0 8.7%;
@@ -38,7 +44,7 @@ h1 {
   background: #f8f8f8;
 }
 #graph-section {
-  flex: 0 0 34.8%;
+  flex: 0 0 40%;
   min-height: 0;
   max-height: none;
   display: flex;
@@ -89,19 +95,24 @@ h1 {
   margin: 0.5em 0 0.2em 0;
 }
 #calendar {
-  flex: 0 0 34.8%;
+  flex: 0 0 30%;
   min-height: 0;
   max-height: none;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
-  width: 100vw;
-  max-width: 480px;
+  width: 90%;
+  max-width: 432px;
   background: #fff;
   border-radius: 8px;
   box-sizing: border-box;
-  padding: 4px 0 4px 0;
-  margin-bottom: 0;
+  padding: 4px 12px 4px 12px;
+  margin: 0 auto 0 auto;
+}
+#month-year {
+  font-size: 0.37em;
+  font-weight: bold;
+  margin: 0 0.5em;
 }
 .calendar-day {
   aspect-ratio: 1/1;
@@ -122,6 +133,9 @@ h1 {
   background: #e0f7fa;
   font-weight: bold;
   cursor: default;
+  height: 22px;
+  line-height: 22px;
+  font-size: 0.9em;
 }
 .calendar-day.today {
   border: 2px solid #4dd0e1;
