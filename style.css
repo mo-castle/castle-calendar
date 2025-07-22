@@ -1,5 +1,7 @@
 html, body {
   height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,12 +11,16 @@ html, body {
 }
 body {
   height: 100dvh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   overflow: hidden;
 }
 .container {
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   width: 100vw;
   max-width: 430px; /* iPhone15 Pro Max 幅 */
   margin: 0 auto;
