@@ -268,19 +268,22 @@ document.addEventListener('DOMContentLoaded', () => {
     exportBtn.addEventListener('click', exportData); // Added listener
 
     // --- Graph Logic ---
-    const showGraphBtn = document.getElementById('show-graph');
-    const graphContainer = document.getElementById('graph-container');
-    const calendarElContainer = document.getElementById('calendar-controls');
-    const calendarElMain = document.getElementById('calendar');
-    const moodSection = document.getElementById('mood-section');
-    const dataManagement = document.getElementById('data-management');
-    const oneWeekBtn = document.getElementById('one-week');
+    // 不要なボタン・変数・イベントリスナーを削除
+    //const showGraphBtn = document.getElementById('show-graph');
+    //const graphContainer = document.getElementById('graph-container');
+    //const calendarElContainer = document.getElementById('calendar-controls');
+    //const calendarElMain = document.getElementById('calendar');
+    //const moodSection = document.getElementById('mood-section');
+    //const dataManagement = document.getElementById('data-management');
+    //const oneWeekBtn = document.getElementById('one-week');
     const oneMonthBtn = document.getElementById('one-month');
     const threeMonthBtn = document.getElementById('three-month');
+    const halfYearBtn = document.getElementById('half-year');
     const oneYearBtn = document.getElementById('one-year');
 
-    let graphRange = 30; // Default to 1 month
-    let selectedRangeButton = oneMonthBtn; // Initially select 1 month button
+    // デフォルトは3か月
+    let graphRange = 90;
+    let selectedRangeButton = threeMonthBtn;
     selectedRangeButton.classList.add('selected-range');
 
     function updateSelectedRangeButton(newButton) {
@@ -289,94 +292,49 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedRangeButton = newButton;
     }
 
-    showGraphBtn.addEventListener('click', () => {
-        if (graphContainer.style.display === 'none') {
-            calendarElContainer.style.display = 'none';
-            calendarElMain.style.display = 'none';
-            moodSection.style.display = 'none';
-            dataManagement.style.display = 'none';
-            graphContainer.style.display = 'block';
-            renderMoodGraph();
-            showGraphBtn.textContent = 'カレンダーを表示';
-        } else {
-            calendarElContainer.style.display = 'flex';
-            calendarElMain.style.display = 'grid';
-            moodSection.style.display = 'block';
-            dataManagement.style.display = 'block';
-            graphContainer.style.display = 'none';
-            showGraphBtn.textContent = 'グラフを表示';
-        }
-    });
-
-    oneWeekBtn.addEventListener('click', () => {
-        graphRange = 7;
-        updateSelectedRangeButton(oneWeekBtn);
-        renderMoodGraph();
-    });
-
     oneMonthBtn.addEventListener('click', () => {
         graphRange = 30;
         updateSelectedRangeButton(oneMonthBtn);
         renderMoodGraph();
     });
-
     threeMonthBtn.addEventListener('click', () => {
         graphRange = 90;
         updateSelectedRangeButton(threeMonthBtn);
         renderMoodGraph();
     });
-
+    halfYearBtn.addEventListener('click', () => {
+        graphRange = 180;
+        updateSelectedRangeButton(halfYearBtn);
+        renderMoodGraph();
+    });
     oneYearBtn.addEventListener('click', () => {
         graphRange = 365;
         updateSelectedRangeButton(oneYearBtn);
         renderMoodGraph();
     });
 
-    let lastAdjustedMoodValue = 0; // Store the last adjusted mood value
-
     function renderMoodGraph() {
         const moods = getMoods();
         const today = new Date();
-        const pastData = [];
-        let adjustedValues = []; // Store adjusted values for the current graph
-
+        const moodHistory = [];
+        const dateLabels = [];
         for (let i = graphRange - 1; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
             const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            let moodValue = 0;
-
-            if (moods[dateString]) {
-                if (moods[dateString] === '😊') {
-                    moodValue = 1;
-                } else if (moods[dateString] === '😥') {
-                    moodValue = -1;
-                }
-            } else {
-                moodValue = 0;
-            }
-            pastData.push(moodValue);
+            moodHistory.push(moods[dateString] || null);
+            dateLabels.push(`${date.getMonth() + 1}/${date.getDate()}`);
         }
-
-        // Calculate adjusted mood values based on consecutive days
-        const adjustedPastData = calculateAdjustedMoodValues(pastData);
+        const moodPoints = calculateMoodPoints(moodHistory);
         const ctx = document.getElementById('mood-chart').getContext('2d');
-        // Destroy existing chart if it exists
-        if (window.moodChart) {
-            window.moodChart.destroy();
-        }
+        if (window.moodChart) window.moodChart.destroy();
         window.moodChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: pastData.map((_, index) => {
-                    const today = new Date();
-                    const date = new Date(today);
-                    date.setDate(today.getDate() - (graphRange - 1 - index));
-                    return `${date.getMonth() + 1}/${date.getDate()}`;
-                }),
+                labels: dateLabels,
                 datasets: [{
-                    label: 'Mood',
-                    data: adjustedPastData,
+                    label: '心のコンディション',
+                    data: moodPoints,
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1
                 }]
@@ -384,51 +342,62 @@ document.addEventListener('DOMContentLoaded', () => {
             options: {
                 scales: {
                     y: {
-                        min: -10,
-                        max: 10
+                        min: -15,
+                        max: 15
                     }
                 }
             }
         });
     }
 
-    function calculateAdjustedMoodValues(moodValues) {
-        let adjustedValues = [];
-        let consecutiveGoodDays = 0;
-        let consecutiveBadDays = 0;
-
-        for (let i = 0; i < moodValues.length; i++) {
-            let moodValue = moodValues[i];
-            let resultMoodValue = moodValue;
-
-            if (moodValue > 0) {
-                consecutiveGoodDays++;
-                consecutiveBadDays = 0;
-                if (consecutiveGoodDays >= 2) {
-                    resultMoodValue = 2;
+    // pt計算ロジック（3回目以降は2倍）
+    function calculateMoodPoints(moodHistory) {
+        let points = [];
+        let total = 0;
+        let prevMood = null;
+        let streak = 0;
+        for (let i = 0; i < moodHistory.length; i++) {
+            const mood = moodHistory[i];
+            let delta = 0;
+            if (mood === '😊') {
+                if (prevMood === '😊') {
+                    streak++;
+                } else {
+                    streak = 1;
                 }
-            } else if (moodValue < 0) {
-                consecutiveBadDays++;
-                consecutiveGoodDays = 0;
-                if (consecutiveBadDays >= 2) {
-                    resultMoodValue = -2;
+                delta = (streak >= 3) ? 2 : 1;
+            } else if (mood === '😥') {
+                if (prevMood === '😥') {
+                    streak++;
+                } else {
+                    streak = 1;
                 }
+                delta = (streak >= 3) ? -2 : -1;
             } else {
-                consecutiveGoodDays = 0;
-                consecutiveBadDays = 0;
+                streak = 0;
+                delta = 0;
             }
-
-            if (i != 0) {
-                resultMoodValue += adjustedValues[i-1];
-                if (moodValue > 0) {
-                    resultMoodValue = Math.min(resultMoodValue, 10);
-                } else if (moodValue < 0) {
-                    resultMoodValue = Math.max(resultMoodValue, -10);
-                }
-            }
-            adjustedValues.push(resultMoodValue);
+            prevMood = mood;
+            total += delta;
+            if (total > 15) total = 15;
+            if (total < -15) total = -15;
+            points.push(total);
         }
-
-        return adjustedValues;
+        return points;
     }
+
+    // カレンダーやデータ変更時にグラフも更新
+    renderMoodGraph();
+    // mood保存時にもグラフ更新
+    const originalSaveMood = saveMood;
+    saveMood = function(date, mood) {
+        originalSaveMood(date, mood);
+        renderMoodGraph();
+    };
+    // mood削除時にもグラフ更新
+    const originalClearMood = clearMood;
+    clearMood = function(date) {
+        originalClearMood(date);
+        renderMoodGraph();
+    };
 });

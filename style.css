@@ -1,231 +1,191 @@
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
-
 body {
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 5px 10px;
-    background-color: #f4f4f4;
-    box-sizing: border-box;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  justify-content: flex-start;
+  align-items: center;
+  background: #f8f8f8;
 }
-
+#app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  max-width: 480px;
+  margin: 0 auto;
+}
 h1 {
-    margin: 5px 0;
-    color: #333;
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 1.3em;
+  background: #f8f8f8;
 }
-
-#calendar-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 300px;
-    margin-bottom: 5px;
+#graph-section {
+  flex: 4 1 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100vw;
+  max-width: 480px;
+  background: #fff;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-#calendar-controls button {
-    padding: 3px 8px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-    width: 300px;
-    background-color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    flex-shrink: 1;
-}
-
-.calendar-day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    padding: 2px 3px;
-    cursor: pointer;
-    border-radius: 3px;
-    position: relative;
-    min-height: 38px;
-    box-sizing: border-box;
-}
-
-.date-number {
-    font-size: 0.7em;
-    line-height: 1;
-    display: block;
-    margin-bottom: 2px;
-    color: #555;
-}
-
-.calendar-day.selected .date-number {
-    color: white;
-}
-
-.calendar-day.header {
-    display: block;
-    padding: 3px 3px;
-    font-weight: bold;
-    cursor: default;
-    background-color: #eee;
-    min-height: auto;
-    line-height: 1.2;
-}
-
-.calendar-day.today {
-    background-color: #fff9c4;
-}
-
-.calendar-day.selected {
-    border: 2px solid #ffeb3b;
-    padding: 0px 1px;
-}
-.calendar-day.selected .date-number {
-     color: #555;
-}
-
-.calendar-day.other-month {
-    color: #ccc;
-    cursor: default;
-}
-
-.mood-indicator-container {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.mood-indicator {
-    font-size: 1.0em;
-    line-height: 1;
-}
-
-#mood-section {
-    margin-top: 10px;
-    text-align: center;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-#mood-display {
-    font-size: 1.8em;
-    margin: 5px 0;
-    min-height: 1.5em;
-}
-
-#mood-buttons button {
-    font-size: 1.3em;
-    padding: 5px;
-    margin: 0 3px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.2s;
-    border: 2px solid transparent;
-    box-sizing: border-box;
-}
-
-#mood-buttons button.selected-mood {
-    border-color: #ffeb3b;
-}
-
-#mood-buttons button:hover {
-    background-color: #eee;
-}
-
-#data-management {
-    margin-top: 10px;
-    width: 300px;
-    text-align: center;
-}
-
-#export-data {
-    padding: 5px 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-}
-
-#export-data:hover {
-    background-color: #218838;
-}
-
-#show-graph {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-top: 10px;
-    width: 300px;
-    position: relative;
-}
-
-#show-graph:hover {
-    background-color: #0056b3;
-}
-
-#graph-container {
-    display: none;
-    width: 100%;
-    height: 900px; /* Adjust as needed */
-    margin-top: 20px;
-    text-align: center; /* Center the buttons */
-}
-
 #graph-range-buttons {
-    margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0 2px 0;
 }
-
 #graph-range-buttons button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin: 0 5px; /* Add some spacing between buttons */
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #f0f0f0;
+  font-size: 0.95em;
+  cursor: pointer;
 }
-
-#graph-range-buttons button:hover,
-#graph-range-buttons button.selected-range {
-    background-color: #0056b3;
+#graph-range-buttons .selected-range {
+  background: #4dd0e1;
+  color: #fff;
+  border: 1.5px solid #0097a7;
 }
-
-#show-graph {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-top: 10px;
-    width: 300px;
+#mood-chart {
+  width: 98% !important;
+  max-width: 440px;
+  height: 100% !important;
+  flex: 1 1 0%;
+  margin-bottom: 0.5em;
+}
+#calendar-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin: 0.5em 0 0.2em 0;
+}
+#calendar {
+  flex: 4 1 0%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  width: 100vw;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 4px 0 8px 0;
+}
+.calendar-day {
+  aspect-ratio: 1/1;
+  min-width: 32px;
+  max-width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1em;
+  background: #f9f9f9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  padding: 2px 0 0 0;
+}
+.calendar-day.header {
+  background: #e0f7fa;
+  font-weight: bold;
+  cursor: default;
+}
+.calendar-day.today {
+  border: 2px solid #4dd0e1;
+}
+.calendar-day.selected {
+  background: #b2ebf2;
+  border: 2px solid #0097a7;
+}
+.calendar-day .date-number {
+  font-size: 1em;
+  margin-bottom: 2px;
+}
+.mood-indicator-container {
+  height: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mood-indicator {
+  font-size: 1.1em;
+}
+#mood-section {
+  flex: 1.5 1 0%;
+  width: 100vw;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #fff;
+  border-top: 1.5px solid #b2ebf2;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  padding: 0.5em 0 0.7em 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#mood-prompt {
+  margin: 0.2em 0 0.5em 0;
+  font-size: 1.1em;
+}
+#mood-buttons {
+  display: flex;
+  gap: 1.5em;
+}
+.mood-btn {
+  font-size: 2.1em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.mood-btn.selected-mood {
+  transform: scale(1.25);
+  filter: drop-shadow(0 0 4px #4dd0e1);
+}
+#data-management {
+  flex: 1 1 0%;
+  width: 100vw;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+}
+#export-data {
+  padding: 4px 12px;
+  border-radius: 10px;
+  border: 1px solid #0097a7;
+  background: #e0f7fa;
+  color: #0097a7;
+  font-size: 1em;
+  cursor: pointer;
+}
+@media (max-width: 500px) {
+  #app-root, #graph-section, #calendar, #mood-section, #data-management {
+    max-width: 100vw;
+  }
+  #mood-section, #data-management {
+    left: 0;
+    right: 0;
+  }
 }
